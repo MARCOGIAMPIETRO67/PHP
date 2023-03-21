@@ -1,7 +1,14 @@
 <?php
 date_default_timezone_set("America/Argentina/Buenos_Aires");
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
+$nombre = "Marco Giampietro";
+$edad = "22";
+$aPeliculas = array("Interestellar", "Todas las de marvel", "Rapidos y furiosos");
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -27,15 +34,18 @@ date_default_timezone_set("America/Argentina/Buenos_Aires");
                 </tr>
                 <tr>
                     <th>nombre y apellido: </th>
-                    <td>Marco Giampietro</td>
+                    <td><?php echo $nombre; ?></td>
                 </tr>
                 <tr>
                     <th>Edad: </th>
-                    <td>22</td>
+                    <td><?php echo $edad; ?></td>
                 </tr>
                 <tr>
                     <th>Peliculas favoritas: </th>
-                    <td>Interestellar <br> Todas de Marvel <br> rapidos y furiosos</td>
+                    <td><?php echo $aPeliculas[0]; ?><br>
+                        <?php echo $aPeliculas[1]; ?><br>
+                        <?php echo $aPeliculas[2]; ?>
+                    </td>
                 </tr>
             </table>
             </div>
