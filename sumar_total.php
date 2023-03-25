@@ -87,7 +87,7 @@ $aProductos[] = array(
                 </table>
             </div>
             <div class="row">
-                <div class="col12">
+                <div class="col-12">
                     <p>El subtotal es: <?php echo $sumatoriaPrecio ?></p>
                 </div>
             </div>
