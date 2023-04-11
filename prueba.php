@@ -3,17 +3,18 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-if($_POST){ 
+if($_POST){
     
-    $usuario = $_POST("txtUsuario");
-    $clave = $_POST("txtClave");
-    
+    $usuario = $_POST["txtUsuario"];
+    $clave = $_POST["txtClave"];
+
     if($usuario == "admin" && $clave == "123456"){
-        header("Location: https//google.com");
-    }else{
-        $msg = "usuario o clave incorrecto";
+        header("Location: https://google.com");
+    } else {
+        $msg = "Usuario o contraseña incorrecto";
     }
 }
+
 
 ?>
 <!DOCTYPE html>
