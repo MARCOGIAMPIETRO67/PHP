@@ -7,17 +7,18 @@ $iva = 21;
 $precioSinIva = 0;
 $precioConIva = 0;
 $ivaCantidad = 0;
+
 if($_POST){
     $iva = $_POST["lstIva"];
     $precioSinIva = ($_POST["txtPrecioSinIva"]) > 0? $_POST["txtPrecioSinIva"]: 0;
     $precioConIva = ($_POST["txtPrecioConIva"]) > 0? $_POST["txtPrecioConIva"]: 0;
     
     if($precioSinIva > 0){
-        $precioConIva = $precioSinIva * ($iva/100+1);
+        $precioConIva = $precioSinIva * ($iva / 100 + 1);
     }
 
     if($precioConIva > 0){
-        $precioSinIva = $precioConIva / ($iva/100+1);
+        $precioSinIva = $precioConIva / ($iva / 100 + 1);
     }
 
     $ivaCantidad = $precioConIva - $precioSinIva;
@@ -71,19 +72,19 @@ if($_POST){
                 <table class="table table-hover border">
                     <tr>
                         <th>IVA:</th>
-                        <td><?php echo $iva; ?>%</td>
+                        <td><?php echo number_format($iva, 2, ",", "."); ?>%</td>
                     </tr>
                     <tr>
                         <th>Precio sin IVA:</th>
-                        <td><?php echo $precioSinIva; ?></td>
+                        <td><?php echo number_format($precioSinIva, 2, ",", "."); ?></td>
                     </tr>
                     <tr>
                         <th>Precio con IVA:</th>
-                        <td><?php echo $precioConIva; ?></td>
+                        <td><?php echo number_format($precioConIva, 2, ",", "."); ?></td>
                     </tr>
                     <tr>
                         <th>IVA cantidad:</th>
-                        <td><?php echo $ivaCantidad; ?></td>
+                        <td><?php echo number_format($ivaCantidad, 2, ",", "."); ?></td>
                     </tr>
                 </table>
             </div>
