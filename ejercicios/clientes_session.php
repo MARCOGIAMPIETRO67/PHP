@@ -14,16 +14,23 @@ if(isset($_SESSION["listadoClientes"])){
 
 if($_POST){
 
-    $nombre = $_POST["txtNombre"];
-    $dni = $_POST["txtDni"];
-    $telefono = $_POST["txtTelefono"];
-    $edad = $_POST["txtEdad"];
+    if(isset($_POST["btnEnviar"])){
 
-    $aClientes[] = array("nombre" => $nombre, "dni" => $dni, "telefono" => $telefono, "edad" => $edad);
+        $nombre = $_POST["txtNombre"];
+        $dni = $_POST["txtDni"];
+        $telefono = $_POST["txtTelefono"];
+        $edad = $_POST["txtEdad"];
 
-    $_SESSION["listadoClientes"] = $aClientes;
+        $aClientes[] = array("nombre" => $nombre, "dni" => $dni, "telefono" => $telefono, "edad" => $edad);
 
-    session_destroy();
+        $_SESSION["listadoClientes"] = $aClientes;
+    }
+
+    if(isset($_POST["btnEliminar"])){
+        session_destroy();
+        $aClientes = array();
+    }
+    
     
 }
 
@@ -36,6 +43,7 @@ if($_POST){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <title>clientes</title>
 </head>
 <body>
@@ -88,6 +96,7 @@ if($_POST){
                                 <td><?php echo $cliente["dni"]; ?></td>
                                 <td><?php echo $cliente["telefono"]; ?></td>
                                 <td><?php echo $cliente["edad"]; ?></td>
+                                <td><form method="post" action=""><button type="submit" name="btnBorrar"><i class="bi bi-trash"></i></button></form></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
