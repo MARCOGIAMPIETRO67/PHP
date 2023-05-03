@@ -30,8 +30,13 @@ if($_POST){
         session_destroy();
         $aClientes = array();
     }
-    
-    
+}
+
+if(isset($_GET["pos"])){
+    $pos = $_GET["pos"];
+    unset($aClientes[$pos]);
+    $_SESSION["listadoClientes"] = $aClientes;
+    header("Location: clientes_session.php");
 }
 
 ?>
@@ -90,13 +95,13 @@ if($_POST){
                         <th>Edad:</th>
                     </thead>
                     <tbody>
-                        <?php foreach ($aClientes as $cliente): ?>
+                        <?php foreach ($aClientes as $pos => $cliente): ?>
                             <tr>
                                 <td><?php echo $cliente["nombre"]; ?></td>
                                 <td><?php echo $cliente["dni"]; ?></td>
                                 <td><?php echo $cliente["telefono"]; ?></td>
                                 <td><?php echo $cliente["edad"]; ?></td>
-                                <td><form method="post" action=""><button type="submit" name="btnBorrar"><i class="bi bi-trash"></i></button></form></td>
+                                <td><a href="clientes_session.php?pos=<?php echo $pos; ?>"><i class="bi bi-trash"></i></td></a>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
