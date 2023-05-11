@@ -8,6 +8,11 @@ if($_POST){
     $nombre = trim($_POST["txtNombre"]);
     $telefono = trim($_POST["txtTelefono"]);
     $correo = trim($_POST["txtCorreo"]);
+
+    $aClientes[] = array("dni" => $dni,
+                         "nombre" => $nombre,
+                         "telefono" => $telefono,
+                         "correo" => $correo);
 }
 
 
