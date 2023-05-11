@@ -3,17 +3,72 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+
+if(file_exists("archivo.txt")){
+
+    $jsonClientes = file_get_contents("archivo.txt", );
+
+    $aClientes = json_decode($jsonClientes, true);
+
+} else {
+
+    $aClientes = array();
+
+}
+
+
+$pos = isset($_GET["pos"]) && $_GET["pos"] >= 0 ? $_GET["pos"] : "";
+
 if($_POST){
     $dni = trim($_POST["txtDni"]);
     $nombre = trim($_POST["txtNombre"]);
     $telefono = trim($_POST["txtTelefono"]);
     $correo = trim($_POST["txtCorreo"]);
+    $nombreImagen = "";
+
+    if ($pos>=0){
+
+        $aClientes[$pos] = array("dni" => $dni,
+                         "nombre" => $nombre,
+                         "telefono" => $telefono,
+                         "correo" => $correo,
+                         "imagen" => $nombreImagen);
+
+    } else {
+        $nombreAleatorio = date("Ymdhmsi");
+        $archivo_temp = $_FILES["archivo"]["tmp_name"];
+        $extension = pathinfo($_FILES["archivo"]["name"], PATHINFO_EXTENSION);
+        if($extension == "jpg" || $extension == "jpeg" || $extension == "png"){
+            $nombreImagen = "$nombreAleatorio.$extension";
+            move_uploaded_file($archivo_temp, "imagenes/$nombreImagen");
+        }
+
 
     $aClientes[] = array("dni" => $dni,
                          "nombre" => $nombre,
                          "telefono" => $telefono,
-                         "correo" => $correo);
+                         "correo" => $correo,
+                         "imagen" => $nombreImagen);
+
+    }
+    $jsonClientes = json_encode($aClientes);
+
+    file_put_contents("archivo.txt", $jsonClientes);
 }
+
+
+
+
+if(isset($_GET["do"]) && $_GET["do"] == "eliminar"){
+    unset($aClientes[$pos]);
+
+    $jsonClientes = json_encode($aClientes);
+
+    file_put_contents("archivo.txt", $jsonClientes);
+
+    header("Location: index.php");
+}
+
 
 
 ?>
@@ -40,22 +95,22 @@ if($_POST){
                 <form action="" method="post" class="form" enctype="multipart/form-data">
                     <div class="pb-1">
                         <label for="txtDni">DNI: *</label>
-                        <input type="text" id="txtDni" name="txtDni" class="form-control" required value="">
+                        <input type="text" id="txtDni" name="txtDni" class="form-control" required value="<?php echo isset($aClientes[$pos])? $aClientes[$pos]["dni"]: ""; ?>">
                     </div>
                 
                     <div class="pb-1">
                         <label for="txtNombre">Nombre: *</label>
-                        <input type="text" id="txtNombre" name="txtNombre" class="form-control" required value="">
+                        <input type="text" id="txtNombre" name="txtNombre" class="form-control" required value="<?php echo isset($aClientes[$pos])? $aClientes[$pos]["nombre"]: ""; ?>">
                     </div>
 
                     <div class="pb-1">
                         <label for="txtTelefono">Telefono:</label>
-                        <input type="tel" id="txtTelefono" name="txtTelefono" class="form-control">
+                        <input type="tel" id="txtTelefono" name="txtTelefono" class="form-control" required value="<?php echo isset($aClientes[$pos])? $aClientes[$pos]["telefono"]: ""; ?>">
                     </div>
 
                     <div class="pb-1">
                         <label for="txtCorreo">Correo: *</label>
-                        <input type="text" id="txtCorreo" name="txtCorreo" class="form-control" required value="">
+                        <input type="text" id="txtCorreo" name="txtCorreo" class="form-control" required value="<?php echo isset($aClientes[$pos])? $aClientes[$pos]["correo"]: ""; ?>">
                     </div>
                     <div class="pb-1">
                         <label for="">Archivo adjunto</label>
@@ -78,12 +133,24 @@ if($_POST){
                         <th>Nombre:</th>
                         <th>Telefono:</th>
                         <th>Correo:</th>
+                        <th>Acciones</th>
                     </thead>
-                    <tbody>
-                            <tr>
-
-                            </tr>
-                    </tbody>
+                    <?php foreach ($aClientes as $pos => $cliente): ?>
+                        <tr>
+                            <td>
+                                <?php if($cliente["imagen"] != ""): ?>
+                                    <img src="imagenes/<?php echo $cliente["imagen"]; ?>" class="img-thumbnail"></td>
+                                <?php endif; ?>
+                                
+                            <td><?php echo $cliente["dni"]; ?></td>
+                            <td><?php echo $cliente["nombre"]; ?></td>
+                            <td><?php echo $cliente["telefono"]; ?></td>
+                            <td><?php echo $cliente["correo"]; ?></td>
+                            <td>
+                                <a href="index.php?pos=<?php echo $pos; ?>&do=editar"><i class="bi-solid bi-pencil"></i></a>
+                                <a href="index.php?pos=<?php echo $pos; ?>&do=eliminar"><i class="bi bi-trash"></i></td></a>
+                        </tr>
+                        <?php endforeach; ?>
                 </table>
             </div>
         </div>
