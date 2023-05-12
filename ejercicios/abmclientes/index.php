@@ -8,10 +8,12 @@ if(file_exists("archivo.txt")){
 
     $jsonClientes = file_get_contents("archivo.txt", );
 
+    //convertir jsonClientes en un array llamado aClientes
     $aClientes = json_decode($jsonClientes, true);
 
 } else {
-
+//si no existe el archivo
+    //creamos un aClientes inicializado como un array vacio
     $aClientes = array();
 
 }
@@ -27,7 +29,26 @@ if($_POST){
     $nombreImagen = "";
 
     if ($pos>=0){
+        if($_FILES["archivo"]["error"] === UPLOAD_ERR_OK){
+            $nombreAleatorio = date("Ymdhmsi");
+            $archivo_temp = $_FILES["archivo"]["tmp_name"];
+            $extension = pathinfo($_FILES["archivo"]["name"], PATHINFO_EXTENSION);
+            if($extension == "jpg" || $extension == "jpeg" || $extension == "png"){
+                $nombreImagen = "$nombreAleatorio.$extension";
+                move_uploaded_file($archivo_temp, "imagenes/$nombreImagen");
+            }
+            //eliminar la imagen anterior
+            if($aClientes[$pos]["imagenes"] != "" && file_exists("imagenes/".$aClientes[$pos]["imagen"])){
+                unlink("imagenes/".$aClientes[$pos]["imagen"]);
+            }
 
+        } else {
+            //MAntener el nombreImagen que teniamos antes
+            $nombreImagen = $aClientes[$pos]["imagen"];
+
+        }
+
+        //actualizar
         $aClientes[$pos] = array("dni" => $dni,
                          "nombre" => $nombre,
                          "telefono" => $telefono,
@@ -35,22 +56,26 @@ if($_POST){
                          "imagen" => $nombreImagen);
 
     } else {
-        $nombreAleatorio = date("Ymdhmsi");
-        $archivo_temp = $_FILES["archivo"]["tmp_name"];
-        $extension = pathinfo($_FILES["archivo"]["name"], PATHINFO_EXTENSION);
-        if($extension == "jpg" || $extension == "jpeg" || $extension == "png"){
-            $nombreImagen = "$nombreAleatorio.$extension";
-            move_uploaded_file($archivo_temp, "imagenes/$nombreImagen");
+        if($_FILES["archivo"]["error"] === UPLOAD_ERR_OK){
+            $nombreAleatorio = date("Ymdhmsi");
+            $archivo_temp = $_FILES["archivo"]["tmp_name"];
+            $extension = pathinfo($_FILES["archivo"]["name"], PATHINFO_EXTENSION);
+            if($extension == "jpg" || $extension == "jpeg" || $extension == "png"){
+                $nombreImagen = "$nombreAleatorio.$extension";
+                move_uploaded_file($archivo_temp, "imagenes/$nombreImagen");
+            }
         }
 
-
-    $aClientes[] = array("dni" => $dni,
-                         "nombre" => $nombre,
-                         "telefono" => $telefono,
-                         "correo" => $correo,
-                         "imagen" => $nombreImagen);
+        //insertar
+        $aClientes[] = array("dni" => $dni,
+                            "nombre" => $nombre,
+                            "telefono" => $telefono,
+                            "correo" => $correo,
+                            "imagen" => $nombreImagen);
 
     }
+
+    //convertir el array de clientes a jsonClientes
     $jsonClientes = json_encode($aClientes);
 
     file_put_contents("archivo.txt", $jsonClientes);
@@ -141,7 +166,7 @@ if(isset($_GET["do"]) && $_GET["do"] == "eliminar"){
                                 <?php if($cliente["imagen"] != ""): ?>
                                     <img src="imagenes/<?php echo $cliente["imagen"]; ?>" class="img-thumbnail"></td>
                                 <?php endif; ?>
-                                
+
                             <td><?php echo $cliente["dni"]; ?></td>
                             <td><?php echo $cliente["nombre"]; ?></td>
                             <td><?php echo $cliente["telefono"]; ?></td>

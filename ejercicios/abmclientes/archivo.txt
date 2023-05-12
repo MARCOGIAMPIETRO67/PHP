@@ -1,1 +1,1 @@
-{"2":{"dni":"3455234","nombre":"gdfbgdfbgertdf","telefono":"2234243","correo":"grdfergfgerf@grsgre","imagen":"2023051212054527.png"},"3":{"dni":"532425","nombre":"dgsfgrsdgrds","telefono":"345345345","correo":"ertergdregt@rdgrdg","imagen":""}}
+[{"dni":"432243423","nombre":"aaaaa","telefono":"4232432432","correo":"fefeafeas@gmail.com","imagen":"2023051202055348.png"},{"dni":"2453523","nombre":"feasfea","telefono":"423243","correo":"dfaaweawd@FESWEF","imagen":""}]
