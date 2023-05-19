@@ -16,13 +16,15 @@ if(file_exists("invitados.txt")){
 if($_POST){
 
     if(isset($_POST["btnProcesar"])){
-        $documento = $_REQUEST["txtDocumento"];
+        $archivo = $_REQUEST["txtDocumento"];
 
-        if(in_array($documento, $aDocumentos)){
+        if(in_array($archivo, $aDocumentos)){
             $mensaje = "Bienvendo";
         } else {
             $mensaje = "No se encuentra en la lista de invitados";
         }
+
+
 
     }
 
