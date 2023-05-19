@@ -5,6 +5,18 @@ error_reporting(E_ALL);
 
 include_once "config.php";
 
+if($_POST){
+  $usuario = trim($_REQUEST["txtUsuario"]);
+  $clave = trim($_REQUEST["txtClave"]);
+
+  if($usuario == "admin" && $clave == "admin123"){
+    $_SESSION["nombre"] = "Marco";
+    header("Location: index.php");
+
+  } else {
+    $msg = "Usuario o clave incorrecto";
+  }
+}
 
 
 ?>
